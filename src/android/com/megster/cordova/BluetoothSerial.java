@@ -300,8 +300,11 @@ public class BluetoothSerial extends CordovaPlugin {
                 String action = intent.getAction();
                 if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+
                     try {
                     	JSONObject o = deviceToJSON(device);
+                        o.put("rssi", rssi);
                         unpairedDevices.put(o);
                         if (ddc != null) {
                             PluginResult res = new PluginResult(PluginResult.Status.OK, o);
